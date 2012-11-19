@@ -1,5 +1,5 @@
 # Explanation
-
+The idea is to provide a VERY EASY platform, to develop embebed HTML5 apps/systems. The idea is to provide a system based on GNU/Linux, X System and Webkit Web Browser with an extended JavaScript API that allows to connect to a Python service that will extend JavaScript API, allowing to run extra functionalities or specific drivers for several embebed systems like infopoints or ticketing machines.
 
 # Autologin
 The idea is to launch X on a GNU/Linux based system and then run ArinOs Web Browser and the Python service (not added to the repository yet). To make it automatically you can follow this steps:
