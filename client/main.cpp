@@ -14,6 +14,7 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include <sstream>
+#include <X11/Xlib.h>
 /*
 MY TES CLASS
 
@@ -207,8 +208,43 @@ static GtkWidget* create_window()
   return window;
 }
 
+
+/***************************
+X system resolution
+
+*****************************/
+int getScreenSize(int *w, int*h)
+{
+
+     Display* pdsp = NULL;
+     Screen* pscr = NULL;
+
+     pdsp = XOpenDisplay( NULL );
+     if ( !pdsp ) {
+      fprintf(stderr, "Failed to open default display.\n");
+      return -1;
+     }
+
+        pscr = DefaultScreenOfDisplay( pdsp );
+     if ( !pscr ) {
+      fprintf(stderr, "Failed to obtain the default screen of given display.\n");
+      return -2;
+     }
+
+     *w = pscr->width;
+     *h = pscr->height;
+
+     XCloseDisplay( pdsp );
+     return 0;
+}
+
+
+
 int main (int argc, char* argv[])
 {
+  int w, h;
+  getScreenSize(&w, &h);
+
   gtk_init (&argc, &argv);
   if (!g_thread_supported())
      g_thread_init (NULL);
@@ -225,7 +261,7 @@ int main (int argc, char* argv[])
   gtk_widget_grab_focus (GTK_WIDGET (web_view));
   //gtk_window_fullscreen (main_window);
   gtk_window_set_title(GTK_WINDOW (main_window),"ArinOs");
-  gtk_window_set_default_size(GTK_WINDOW (main_window), 1000, 600);
+  gtk_window_set_default_size(GTK_WINDOW (main_window), w, h);
   gtk_widget_show_all (main_window);
   gtk_main ();
 
