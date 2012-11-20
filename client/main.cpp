@@ -29,7 +29,7 @@ MY TES CLASS
 
 int server_port = 4102;
 char* server_addres = (char*) "127.0.0.1";
-gchar* uri = (gchar*) "file://simple.html";
+gchar* uri = (gchar*) "file://sample.html";
 
 
 static void arincore_init_cb(JSContextRef ctx, JSObjectRef object)
@@ -65,7 +65,7 @@ static const char* arincore_socket(char* jsondata)
 
   if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
-       return "{'status':'fail', 'error':{'code':'503','message':'Error : Connect Faile'}}";
+       return "{'status':'fail', 'error':{'code':'503','message':'Error : Connect Fail'}}";
   }
 
   long readed_bits = 0;
@@ -103,7 +103,7 @@ static JSValueRef arincore_sync(JSContextRef context,
     str[strLen] = 0;
     const char* core_response = arincore_socket(str);
 
-    printf("%s",core_response);
+    #printf("%s",core_response);
     fflush(stdout);
 
 
