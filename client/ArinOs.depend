@@ -2534,7 +2534,7 @@
 	<stdbool.h>
 	<stddef.h>
 
-1353343540 source:/home/iker/Documentos/Workspace/Custom/html5/ArinOs/client/main.cpp
+1353407213 source:/home/iker/Documentos/Workspace/Custom/html5/ArinOs/client/main.cpp
 	<gtk/gtk.h>
 	<webkit/webkit.h>
 	<JavaScriptCore/JavaScript.h>
@@ -2552,6 +2552,8 @@
 	<arpa/inet.h>
 	<sstream>
 	<X11/Xlib.h>
+	<getopt.h>
+	<iostream>
 
 1339012608 /usr/include/glib-2.0/gobject/gbinding.h
 	<glib.h>

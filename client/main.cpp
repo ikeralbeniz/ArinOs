@@ -15,11 +15,22 @@
 #include <arpa/inet.h>
 #include <sstream>
 #include <X11/Xlib.h>
+#include <getopt.h>
+#include <iostream>
+
+#define no_argument 0
+#define required_argument 1
+#define optional_argument 2
 /*
 MY TES CLASS
 
 
 */
+
+int server_port = 4102;
+char* server_addres = (char*) "127.0.0.1";
+gchar* uri = (gchar*) "file://simple.html";
+
 
 static void arincore_init_cb(JSContextRef ctx, JSObjectRef object)
 {
@@ -45,9 +56,9 @@ static const char* arincore_socket(char* jsondata)
   memset(&serv_addr, '0', sizeof(serv_addr));
 
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_port = htons(4102);
+  serv_addr.sin_port = htons(server_port);
 
-  if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
+  if(inet_pton(AF_INET, server_addres, &serv_addr.sin_addr)<=0)
   {
         return "{'status':'fail', 'error':{'code':'502','message':'Error : inet_pton error occured'}}";
   }
@@ -243,7 +254,56 @@ int getScreenSize(int *w, int*h)
 int main (int argc, char* argv[])
 {
   int w, h;
+
+
+
   getScreenSize(&w, &h);
+
+  const struct option longopts[] =
+  {
+    {"url",   required_argument,        0, 'u'},
+    {"server_address",      required_argument,        0, 'a'},
+    {"server_port",     required_argument,  0, 'p'},
+    {0,0,0,0},
+  };
+
+  int index;
+  int iarg=0;
+
+  //turn off getopt error message
+  opterr=1;
+
+  while(iarg != -1)
+  {
+    iarg = getopt_long(argc, argv, "s:vh", longopts, &index);
+
+    switch (iarg)
+    {
+       case 'u':
+        if(optarg){
+            std::cout << "Submited URL: " << optarg << std::endl;
+            uri = (gchar*) optarg;
+            }
+        break;
+
+      case 'a':
+        if(optarg){
+            std::cout << "Submited Addres: " << optarg << std::endl;
+            server_addres = (char*) optarg;
+            }
+        break;
+
+      case 'p':
+        if(optarg){
+            std::cout << "Submited Port: " << optarg << std::endl;
+            server_port = atoi(optarg);
+
+            }
+
+        break;
+
+    }
+  }
 
   gtk_init (&argc, &argv);
   if (!g_thread_supported())
@@ -255,7 +315,7 @@ int main (int argc, char* argv[])
   main_window = create_window();
   gtk_container_add(GTK_CONTAINER (main_window), vbox);
 
-  gchar* uri = (gchar*) "file://simple.html";
+  //uri = (gchar*) "file://simple.html";
   webkit_web_view_open(web_view, uri);
 
   gtk_widget_grab_focus (GTK_WIDGET (web_view));
